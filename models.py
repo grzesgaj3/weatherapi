@@ -22,10 +22,14 @@ class Measurement(db.Model):
 
     id          = db.Column(db.BigInteger, primary_key=True)
     station_id  = db.Column(db.Integer, db.ForeignKey("stations.id", ondelete="CASCADE"), nullable=False)
-    temperature = db.Column(db.Numeric(5, 2), nullable=False)
-    humidity    = db.Column(db.Numeric(5, 2), nullable=False)
-    pressure    = db.Column(db.Numeric(7, 2), nullable=False)
-    co          = db.Column(db.Numeric(7, 2), nullable=False)
+    t           = db.Column(db.Numeric(5, 2), nullable=False)
+    h           = db.Column(db.Numeric(5, 2), nullable=False)
+    p           = db.Column(db.Numeric(7, 2), nullable=False)
+    r           = db.Column(db.Numeric(5, 2), nullable=False)
+    ra          = db.Column(db.Integer, nullable=False)
+    mq          = db.Column(db.Integer, nullable=False)
+    aht         = db.Column(db.Boolean, nullable=False)
+    bmp         = db.Column(db.Boolean, nullable=False)
     recorded_at = db.Column(db.DateTime, nullable=False)
     created_at  = db.Column(db.DateTime, nullable=False, default=lambda: datetime.now(timezone.utc))
 

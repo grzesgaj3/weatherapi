@@ -54,10 +54,14 @@ def create_measurements():
         item = _normalize_recorded_at(item)
         rows.append(Measurement(
             station_id  = station.id,
-            temperature = item["temperature"],
-            humidity    = item["humidity"],
-            pressure    = item["pressure"],
-            co          = item["co"],
+            t           = item["t"],
+            h           = item["h"],
+            p           = item["p"],
+            r           = item["r"],
+            ra          = item["ra"],
+            mq          = item["mq"],
+            aht         = item["aht"],
+            bmp         = item["bmp"],
             recorded_at = item["recorded_at"],
         ))
 
@@ -100,10 +104,14 @@ def list_measurements():
         data=[
             {
                 "id": r.id,
-                "temperature": float(r.temperature),
-                "humidity": float(r.humidity),
-                "pressure": float(r.pressure),
-                "co": float(r.co),
+                "t": float(r.t),
+                "h": float(r.h),
+                "p": float(r.p),
+                "r": float(r.r),
+                "ra": r.ra,
+                "mq": r.mq,
+                "aht": r.aht,
+                "bmp": r.bmp,
                 "recorded_at": r.recorded_at.replace(tzinfo=timezone.utc).isoformat(),
             }
             for r in rows

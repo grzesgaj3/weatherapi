@@ -1,0 +1,33 @@
+ALTER TABLE measurements
+    ADD COLUMN t DECIMAL(5,2) NULL AFTER station_id,
+    ADD COLUMN h DECIMAL(5,2) NULL AFTER t,
+    ADD COLUMN p DECIMAL(7,2) NULL AFTER h,
+    ADD COLUMN r DECIMAL(5,2) NULL AFTER p,
+    ADD COLUMN ra INT NULL AFTER r,
+    ADD COLUMN mq INT NULL AFTER ra,
+    ADD COLUMN aht TINYINT(1) NULL AFTER mq,
+    ADD COLUMN bmp TINYINT(1) NULL AFTER aht;
+
+UPDATE measurements
+SET t = temperature,
+    h = humidity,
+    p = pressure,
+    r = 0,
+    ra = 0,
+    mq = 0,
+    aht = 0,
+    bmp = 0;
+
+ALTER TABLE measurements
+    MODIFY COLUMN t DECIMAL(5,2) NOT NULL,
+    MODIFY COLUMN h DECIMAL(5,2) NOT NULL,
+    MODIFY COLUMN p DECIMAL(7,2) NOT NULL,
+    MODIFY COLUMN r DECIMAL(5,2) NOT NULL,
+    MODIFY COLUMN ra INT NOT NULL,
+    MODIFY COLUMN mq INT NOT NULL,
+    MODIFY COLUMN aht TINYINT(1) NOT NULL,
+    MODIFY COLUMN bmp TINYINT(1) NOT NULL,
+    DROP COLUMN temperature,
+    DROP COLUMN humidity,
+    DROP COLUMN pressure,
+    DROP COLUMN co;

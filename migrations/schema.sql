@@ -16,10 +16,14 @@ CREATE TABLE stations (
 CREATE TABLE measurements (
     id            BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     station_id    INT UNSIGNED NOT NULL,
-    temperature   DECIMAL(5,2)  NOT NULL,
-    humidity      DECIMAL(5,2)  NOT NULL,
-    pressure      DECIMAL(7,2)  NOT NULL,
-    co            DECIMAL(7,2)  NOT NULL,
+    t             DECIMAL(5,2)  NOT NULL,
+    h             DECIMAL(5,2)  NOT NULL,
+    p             DECIMAL(7,2)  NOT NULL,
+    r             DECIMAL(5,2)  NOT NULL,
+    ra            INT           NOT NULL,
+    mq            INT           NOT NULL,
+    aht           TINYINT(1)    NOT NULL,
+    bmp           TINYINT(1)    NOT NULL,
     recorded_at   DATETIME      NOT NULL,
     created_at    TIMESTAMP     NOT NULL DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT fk_measurements_station
