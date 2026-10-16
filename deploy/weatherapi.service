@@ -1,0 +1,50 @@
+[Unit]
+Description=Weather API (FastAPI / uvicorn)
+Documentation=file:/opt/weatherapi/README.md
+After=network-online.target mysql.service mariadb.service
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=weatherapi
+Group=weatherapi
+WorkingDirectory=/opt/weatherapi
+EnvironmentFile=/opt/weatherapi/.env
+
+# --- Oszczędność pamięci (glibc arena + brak .pyc) ---
+Environment=MALLOC_ARENA_MAX=2
+Environment=PYTHONDONTWRITEBYTECODE=1
+Environment=PYTHONUNBUFFERED=1
+
+# Jeden proces roboczy = najmniejszy ślad pamięciowy.
+# --no-access-log / --no-server-header: mniej I/O i mniej ujawniania.
+ExecStart=/opt/weatherapi/.venv/bin/uvicorn app.main:app \
+    --host 127.0.0.1 --port 8000 \
+    --workers 1 \
+    --no-access-log \
+    --no-server-header \
+    --limit-concurrency 50 \
+    --timeout-keep-alive 15 \
+    --backlog 64
+
+Restart=on-failure
+RestartSec=3
+
+# --- Twarde limity zasobów ---
+MemoryMax=256M
+MemoryHigh=192M
+CPUQuota=80%
+TasksMax=64
+
+# --- Hardening ---
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ProtectKernelTunables=true
+ProtectControlGroups=true
+RestrictSUIDSGID=true
+ReadWritePaths=/opt/weatherapi
+
+[Install]
+WantedBy=multi-user.target

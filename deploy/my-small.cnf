@@ -1,0 +1,31 @@
+# Tuning MySQL/MariaDB pod bardzo mały VPS (256–512 MB RAM).
+# Umieść jako /etc/mysql/conf.d/zz-small.cnf lub /etc/mysql/mariadb.conf.d/zz-small.cnf
+# i zrestartuj usługę: sudo systemctl restart mysql  (albo mariadb)
+
+[mysqld]
+# --- Pamięć ---
+innodb_buffer_pool_size     = 64M
+innodb_log_file_size        = 16M
+innodb_buffer_pool_instances = 1
+performance_schema          = OFF
+max_connections             = 20
+thread_cache_size           = 4
+
+# --- Buforowanie zapytań / tabel ---
+table_open_cache            = 64
+table_definition_cache      = 200
+key_buffer_size             = 8M
+tmp_table_size              = 16M
+max_heap_table_size         = 16M
+
+# --- Bufory per połączenie (małe, bo połączeń mało) ---
+sort_buffer_size            = 256K
+read_buffer_size            = 128K
+read_rnd_buffer_size        = 256K
+join_buffer_size            = 256K
+
+# --- Trwałość vs szybkość ---
+# 2 = commituj raz na sekundę (mniejszy zapis na dysk). Dla pomiarów pogodowych OK.
+innodb_flush_log_at_trx_commit = 2
+innodb_flush_method         = O_DIRECT
+skip_name_resolve           = ON
